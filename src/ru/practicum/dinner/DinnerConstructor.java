@@ -6,21 +6,30 @@ import java.util.ArrayList;
 
 public class DinnerConstructor {
     Random random = new Random();
-    HashMap<String, ArrayList<String>> dinnerCombo = new HashMap<>();
+    HashMap<String, ArrayList<String>> dishListByCategories = new HashMap<>();
 
     void addNewDish(String dishType, String dishName) {
-        if (!dinnerCombo.containsKey(dishType)) {
-            ArrayList<String> categoryDishList = new ArrayList<>();
-            dinnerCombo.put(dishType, categoryDishList);
-            dinnerCombo.get(dishType).add(dishName);
+        if (!this.checkType(dishType)) {
+            ArrayList<String> newDishList = new ArrayList<>();
+            dishListByCategories.put(dishType, newDishList);
+            dishListByCategories.get(dishType).add(dishName);
         } else {
-            dinnerCombo.get(dishType).add(dishName);
+            dishListByCategories.get(dishType).add(dishName);
         }
-        System.out.println("Добавили блюдо  " + dishName + " к типу блюд " + dishType);
+        System.out.println("Добавили блюдо " + dishName + " к типу блюд " + dishType);
     }
 
-
-    void generateDishCombo(int numberOfCombos, String nextItem) {
-
+    ArrayList<String> generateDishCombo(ArrayList<String> dishTypes) {
+        ArrayList<String> currentCombo = new ArrayList<>();
+        for (String dishType : dishTypes) {
+            int randomNumber = random.nextInt(dishListByCategories.get(dishType).size());
+            currentCombo.add(dishListByCategories.get(dishType).get(randomNumber));
+        }
+        return currentCombo;
     }
+
+    boolean checkType(String dishType) {
+        return dishListByCategories.containsKey(dishType);
+    }
+
 }
